@@ -50,6 +50,13 @@
             public FakeRouteCacheConfigurator AddGetRoute(string path, Type moduleType)
             {
                 this.AddRoutesToCache(new[] { new RouteDescription("GET", path, null) }, moduleType);
+            public FakeRouteCacheConfigurator AddPostRoute (string path, string moduleKey)
+            {
+                this.AddRoutesToCache (new[] { new RouteDescription ("POST", path, null) }, moduleKey);
+
+                return this;
+            }
+
 
                 return this;
             }

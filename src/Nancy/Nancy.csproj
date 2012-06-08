@@ -208,6 +208,11 @@
     <Compile Include="Routing\IRouteSegmentExtractor.cs" />
     <Compile Include="Routing\ParameterSegmentInformation.cs" />
     <Compile Include="Routing\ResolveResult.cs" />
+    <Compile Include="Routing\CORS\CORSModuleExtension.cs" />
+    <Compile Include="Routing\CORS\CORSRequestException.cs" />
+    <Compile Include="Routing\CORS\CORSOptions.cs" />
+    <Compile Include="Routing\CORS\CORSStartup.cs" />
+    <Compile Include="Routing\RouteCandidateExtensions.cs" />
     <Compile Include="Routing\OptionsRoute.cs" />
     <Compile Include="Routing\Trie\IRouteResolverTrie.cs" />
     <Compile Include="Routing\Trie\ITrieNodeFactory.cs" />
