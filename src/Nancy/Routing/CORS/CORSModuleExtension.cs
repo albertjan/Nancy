@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.IO;
-
-    using Nancy.Extensions;
 
     /// <summary>
     /// Adds extensions to a module to give the use the ability to configure the automatic OPTIONS route for use with CORS.
@@ -21,10 +18,12 @@
             var response = resp ?? ctx.Response;
             var request = ctx.Request;
 
-            if (request.Headers.AccessControlRequestMethod.Count() == 0 && request.Method == "OPTIONS") return;
+            if (!request.Headers.AccessControlRequestMethod.Any() && request.Method == "OPTIONS") return;
 
-            if (request.Method == "OPTIONS") response.Headers["Access-Control-Allow-Headers"] = 
-                string.Join (", ", request.Headers.AccessControlRequestHeaders.Where (h => !options.DisalllowedHeaders.Contains (h)));
+            if (request.Method == "OPTIONS") 
+            {
+                response.Headers["Access-Control-Allow-Headers"] =  string.Join (", ", request.Headers.AccessControlRequestHeaders.Where (h => !options.DisalllowedHeaders.Contains (h)));
+            }
 
             if (options.AllowCredentials && options.AllowedOrigins.Contains ("*"))
             {
@@ -52,7 +51,7 @@
                 Options.Add (module.GetType ().FullName, new CORSOptions ());
             }
             
-            module.After.AddItemToStartOfPipeline (c => c.ModifyResponseForCORS (module.Routes.Where (r => RoutePatternMatcher.Match(c.Request.Path, r.Description.Path, c).IsMatch).Select (
+            module.After.AddItemToStartOfPipeline (c => c.ModifyResponseForCORS (module.Routes.Where (r => RoutePatternMatcher.Match(c.Request.Path, r.Description.Path,null, c).IsMatch).Select (
                 r => r.Description.Method), Options[module.GetType ().FullName]));
         }
 
@@ -70,7 +69,7 @@
             }
             else
             {
-                new CORSRequestException("CORS not enabled. Enable by calling this.EnableCORS() in the module");
+                throw new CORSRequestException("CORS not enabled. Enable by calling this.EnableCORS() in the module");
             }
         }
 
@@ -88,7 +87,7 @@
             }
             else
             {
-                new CORSRequestException ("CORS not enabled. Enable by calling this.EnableCORS() in the module");
+                throw new CORSRequestException ("CORS not enabled. Enable by calling this.EnableCORS() in the module");
             }
         }
 
@@ -105,7 +104,7 @@
             }
             else
             {
-                new CORSRequestException ("CORS not enabled. Enable by calling this.EnableCORS() in the module");
+                throw new CORSRequestException ("CORS not enabled. Enable by calling this.EnableCORS() in the module");
             }
         }
         

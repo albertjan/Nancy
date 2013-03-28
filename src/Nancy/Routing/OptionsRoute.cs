@@ -11,22 +11,33 @@
     /// </summary>
     public class OptionsRoute : Route
     {
-        public OptionsRoute (NancyContext context, IEnumerable<string> allowedMethods, IEnumerable<string> corsAllowedMethods, IEnumerable<CORSOptions> corsOptions) 
-            : base("OPTIONS", context.Request.Path, null, x => CreateMethodOptionsResponse(allowedMethods, context, corsAllowedMethods, corsOptions))
-        {            
+        public OptionsRoute(string path, IEnumerable<string> allowedMethods)
+            : base("OPTIONS", path, null, x => CreateMethodOptionsResponse(allowedMethods))
+        {
         }
 
-
-        private static Response CreateMethodOptionsResponse (IEnumerable<string> allowedMethods, NancyContext ctx, IEnumerable<string> corsAllowedMethods, IEnumerable<CORSOptions> corsOptions)
+        public OptionsRoute (string path, IEnumerable<string> allowedMethods, IEnumerable<string> corsAllowedMethods, IEnumerable<CORSOptions> corsOptions)
+            : base("OPTIONS", path, null, x => CreateMethodOptionsResponse(allowedMethods, corsAllowedMethods, corsOptions))
+        {            
+        }
+        
+        private static Response CreateMethodOptionsResponse(IEnumerable<string> allowedMethods)
         {
             var response = new Response();
             response.Headers["Allow"] = string.Join(", ", allowedMethods);
 
+            response.StatusCode = HttpStatusCode.OK;
+
+            return response;
+        }
+
+        private static Response CreateMethodOptionsResponse (IEnumerable<string> allowedMethods, IEnumerable<string> corsAllowedMethods, IEnumerable<CORSOptions> corsOptions)
+        {
+            var response = CreateMethodOptionsResponse(allowedMethods);
+            
             var options = CORSOptions.MergeCORSOptions(corsOptions);
             
-            if (options != null) ctx.ModifyResponseForCORS(corsAllowedMethods, options, response);
-
-            response.StatusCode = HttpStatusCode.OK;
+            // if (options != null) ctx.ModifyResponseForCORS(corsAllowedMethods, options, response);
 
             return response;
         }

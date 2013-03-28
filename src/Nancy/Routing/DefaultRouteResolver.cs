@@ -63,7 +63,6 @@
         }
 
         private ResolveResult BuildOptionsResult(NancyContext context)
-                        routeMethod.Equals(requestMethod) || (routeMethod.Equals("GET") && requestMethod.Equals("HEAD"));
         {
             var path = context.Request.Path;
 
@@ -71,13 +70,13 @@
 
             var optionsResult = new OptionsRoute(path, options);
 
-                    return new ResolveResults
+            return new ResolveResult(
                             optionsResult,
-                            new DynamicDictionary(), 
-                    {
-                        Selected = new ResolveResult (new OptionsRoute (context, allowedMethods), DynamicDictionary.Empty, null, null),
-                    };
-                //}
+                            new DynamicDictionary(),
+                            null,
+                            null,
+                            null);         
+        }
 
         private bool IsOptionsRequest(NancyContext context)
         {

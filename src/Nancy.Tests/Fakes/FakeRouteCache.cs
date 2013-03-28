@@ -50,16 +50,17 @@
             public FakeRouteCacheConfigurator AddGetRoute(string path, Type moduleType)
             {
                 this.AddRoutesToCache(new[] { new RouteDescription("GET", path, null) }, moduleType);
-            public FakeRouteCacheConfigurator AddPostRoute (string path, string moduleKey)
+
+                return this;
+            }
+
+            public FakeRouteCacheConfigurator AddPostRoute(string path, Type moduleKey)
             {
-                this.AddRoutesToCache (new[] { new RouteDescription ("POST", path, null) }, moduleKey);
+                this.AddRoutesToCache(new[] { new RouteDescription("POST", path, null) }, moduleKey);
 
                 return this;
             }
 
-
-                return this;
-            }
 
             public FakeRouteCacheConfigurator AddGetRoute(string path, Type moduleType, Func<NancyContext, bool> condition)
             {
