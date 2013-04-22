@@ -1,8 +1,8 @@
-namespace Nancy.Routing.CORS
-{
-    using System.Linq;
-    using System.Collections.Generic;
+using System.Linq;
+using System.Collections.Generic;
 
+namespace Nancy.CORS
+{
     public class CORSOptions
     {
         /// <summary>

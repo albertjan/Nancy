@@ -1,10 +1,9 @@
-namespace Nancy.Routing.CORS
+using System;
+using Nancy.Bootstrapper;
+using Nancy.Routing;
+
+namespace Nancy.CORS
 {
-    using System;
-    using System.Collections.Generic;
-    
-    using Nancy.Bootstrapper;
-    
     public class CORSStartup : IApplicationStartup
     {
         private readonly IRoutePatternMatcher _routePatternMatcher;
@@ -18,7 +17,13 @@ namespace Nancy.Routing.CORS
 
         public void Initialize(IPipelines pipelines)
         {
-            CORSModuleExtension.RoutePatternMatcher = _routePatternMatcher;
+            pipelines.AfterRequest.AddItemToEndOfPipeline(ctx =>
+            {
+                if (string.Equals(ctx.Request.Method, "OPTIONS", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    
+                }
+            });
         }
 
         #endregion
